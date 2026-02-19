@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  
+  /* Modern SaaS Palette - Light & Clean */
+  /* Custom Maroon Theme */
+  --color-primary: #840032;    
+  --color-primary-dark: #660029; 
+  --color-primary-light: #fdf2f4; /* Subtle light background for the theme */
+  --color-bg-app: #f8fafc;     
+  --color-bg-card: #ffffff;
+  --color-text-main: #0f172a;  
+  --color-text-muted: #64748b; 
+  --color-border: #e2e8f0;     
+}
+
+@theme {
+  --font-sans: var(--font-sans);
+}
+
+@layer base {
+  html {
+     font-size: 93.75%; /* 15px base instead of 16px */
+  }
+  body {
+    background-color: var(--color-bg-app) !important;
+    color: var(--color-text-main) !important;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-slate-700 font-medium px-5 py-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-all active:scale-[0.98] inline-flex items-center gap-2;
+  }
+
+  .card {
+     @apply bg-white border border-slate-200 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)];
+  }
+
+  .input-clean {
+    @apply w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm outline-none transition-all;
+  }
+
+  .input-clean:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(132, 0, 50, 0.1);
+  }
+}
