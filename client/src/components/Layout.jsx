@@ -38,9 +38,7 @@ export default function Layout() {
             {/* Modern Sidebar */}
             <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 fixed h-full z-20">
                 <div className="h-16 flex items-center px-6 border-b border-slate-100">
-                    <div className="bg-[#fdf2f4] p-1.5 rounded-lg mr-3">
-                        <Rocket className="w-5 h-5 text-[#840032] fill-[#840032]" />
-                    </div>
+                    <img src="/logo.png" alt="JobStack Logo" className="w-8 h-8 mr-3 object-contain" />
                     <span className="font-bold text-lg tracking-tight">JobStack</span>
                 </div>
 
@@ -91,6 +89,7 @@ export default function Layout() {
                         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             <Menu className="text-slate-600" />
                         </button>
+                        <img src="/logo.png" alt="Logo" className="w-6 h-6 object-contain" />
                         <span className="font-bold text-lg">JobStack</span>
                     </div>
 
