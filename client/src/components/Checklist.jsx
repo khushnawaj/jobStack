@@ -3,6 +3,8 @@ import { CheckSquare, ArrowRight, RotateCcw, Save, Plus as PlusIcon, X as XIcon 
 import { Link } from 'react-router-dom'
 import useJobStore from '../store/jobStore'
 import { toast } from 'sonner'
+import api from '../api/axios'
+import { Sparkles, Copy, RefreshCw } from 'lucide-react'
 
 export default function Checklist() {
   const { addJob } = useJobStore()
@@ -10,6 +12,8 @@ export default function Checklist() {
   // Persist state to LocalStorage
   const [role, setRole] = useState(() => localStorage.getItem('checklist_role') || '')
   const [company, setCompany] = useState(() => localStorage.getItem('checklist_company') || '')
+  const [aiMessage, setAiMessage] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const DEFAULT_STEPS = [
     { id: 1, text: "Read the full Job Description carefully", checked: false },
@@ -84,6 +88,26 @@ export default function Checklist() {
     }
   }
 
+  const generateOutreach = async () => {
+    if (!role || !company) return toast.error("Enter Role and Company first")
+
+    setIsGenerating(true)
+    try {
+      const res = await api.post('/ai/generate-outreach', { role, company })
+      setAiMessage(res.data.message)
+      toast.success("AI Outreach message generated!")
+    } catch (err) {
+      toast.error("AI Generation failed")
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(aiMessage)
+    toast.success("Message copied to clipboard!")
+  }
+
   return (
     <div className="max-w-3xl mx-auto space-y-8">
 
@@ -128,7 +152,36 @@ export default function Checklist() {
             style={{ width: `${progress}%` }}
           ></div>
         </div>
-        <p className="text-right text-xs font-bold text-[#840032]">{progress}% Complete</p>
+        <p className="text-right text-xs font-bold text-[#840032] mb-6">{progress}% Complete</p>
+
+        {/* AI Toolkit Section */}
+        <div className="mt-6 pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
+              <Sparkles className="w-4 h-4 text-[#840032]" />
+              AI Outreach Assistant
+            </div>
+            <button
+              onClick={generateOutreach}
+              disabled={isGenerating}
+              className="text-xs font-bold text-[#840032] hover:text-[#660029] flex items-center gap-1 bg-[#fdf2f4] px-3 py-1.5 rounded-full transition-colors disabled:opacity-50">
+              {isGenerating ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+              {aiMessage ? 'Regenerate' : 'Generate Message'}
+            </button>
+          </div>
+
+          {aiMessage && (
+            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 relative group animate-in fade-in slide-in-from-top-2">
+              <p className="text-sm text-slate-700 leading-relaxed pr-8">{aiMessage}</p>
+              <button
+                onClick={copyToClipboard}
+                className="absolute top-2 right-2 p-1.5 text-slate-400 hover:text-[#840032] bg-white border border-slate-200 rounded shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                <Copy className="w-3.5 h-3.5" />
+              </button>
+              <p className="mt-2 text-[10px] text-slate-400 font-medium">Under 300 characters (LinkedIn Limit)</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Checklist Items */}

@@ -61,6 +61,29 @@ router.post('/tailor-resume', auth, async (req, res) => {
     }
 });
 
+// AI Outreach Message Generator
+router.post('/generate-outreach', auth, async (req, res) => {
+    try {
+        const { role, company, name } = req.body;
+
+        const prompt = `
+      Write a short, professional LinkedIn connection request message (under 300 characters) for a ${role} position at ${company}.
+      The recipient's name is ${name || 'Hiring Manager'}.
+      Make it respectful, highlight interest in their specific company culture, and keep it under the LinkedIn character limit.
+      Return strictly a JSON object with: { "message": "string" }
+    `;
+
+        const aiResponse = await callClaude(prompt);
+        const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+        const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : { error: "Failed to parse AI response" };
+
+        res.json(parsed);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'AI processing failed' });
+    }
+});
+
 // AI Interview Prep
 router.post('/interview-prep', auth, async (req, res) => {
     try {
