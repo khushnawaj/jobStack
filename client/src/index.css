@@ -1,68 +1,396 @@
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700&display=swap');
 @import "tailwindcss";
 
+/* ─── Windows 8 "Metro" Design System ─── */
 :root {
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --metro-teal: #00aba9;
+  --metro-blue: #2d89ef;
+  --metro-purple: #9f00a7;
+  --metro-dark-purple: #603cba;
+  --metro-red: #ee1111;
+  --metro-orange: #eff4ff;
+  --metro-green: #00a300;
+  --metro-magenta: #ff0097;
   
-  /* Modern SaaS Palette - Light & Clean */
-  /* Custom Maroon Theme */
-  --color-primary: #840032;    
-  --color-primary-dark: #660029; 
-  --color-primary-light: #fdf2f4; /* Subtle light background for the theme */
-  --color-bg-app: #f8fafc;     
-  --color-bg-card: #ffffff;
-  --color-text-main: #0f172a;  
-  --color-text-muted: #64748b; 
-  --color-border: #e2e8f0;     
-}
-
-@theme {
-  --font-sans: var(--font-sans);
-}
-
-@layer base {
-  html {
-     font-size: 93.75%; /* 15px base instead of 16px */
-  }
-  body {
-    background-color: var(--color-bg-app) !important;
-    color: var(--color-text-main) !important;
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-  }
-}
-
-@layer utilities {
-  .btn-primary {
-    background-color: var(--color-primary);
-    color: white;
-    font-weight: 500;
-    padding: 0.625rem 1.25rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  }
-
-  .btn-primary:hover {
-    background-color: var(--color-primary-dark);
-  }
+  --bg-metro: #ffffff;
+  --text-main: #000000;
+  --text-sub: #64748b;
   
-  .btn-secondary {
-    @apply bg-white text-slate-700 font-medium px-5 py-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition-all active:scale-[0.98] inline-flex items-center gap-2;
-  }
+  --border-metro: #e2e8f0;
+}
 
-  .card {
-     @apply bg-white border border-slate-200 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)];
-  }
+/* ─── Modern UI Reset ─── */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-metro);
+  color: var(--text-main);
+  font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 13px;
+  overflow: hidden;
+}
 
-  .input-clean {
-    @apply w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-sm outline-none transition-all;
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto; /* Allow scrolling on mobile if the app exceeds height */
   }
+}
 
-  .input-clean:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(132, 0, 50, 0.1);
+* {
+  border-radius: 0 !important; /* The #1 Rule of Metro */
+  box-shadow: none !important; /* Flat design */
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* ─── Metro Layout ─── */
+.metro-container {
+  padding: 40px 80px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 1024px) {
+  .metro-container {
+    padding: 30px 40px;
   }
+}
+
+@media (max-width: 640px) {
+  .metro-container {
+    padding: 20px 20px;
+  }
+}
+
+/* ─── Metro Tiles ─── */
+.metro-tile {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  background: var(--metro-blue);
+  color: #fff;
+  padding: 15px;
+  margin: 5px;
+  cursor: pointer;
+  position: relative;
+  vertical-align: top;
+}
+
+.metro-tile:hover {
+  outline: 2px solid rgba(0,0,0,0.1);
+  transform: scale(0.98);
+}
+
+.metro-tile-wide {
+  width: 310px;
+}
+
+.metro-tile-large {
+  width: 310px;
+  height: 310px;
+}
+
+.metro-tile-content {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ─── Typography (Huge Win8 Header) ─── */
+.metro-header {
+  font-size: 56px;
+  font-weight: 300;
+  color: var(--text-main);
+  letter-spacing: -1.5px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+@media (max-width: 768px) {
+  .metro-header {
+    font-size: 36px;
+    letter-spacing: -1px;
+  }
+}
+
+.metro-subheader {
+  font-size: 14px; /* Reduced from 20px */
+  font-weight: 600;
+  color: var(--text-sub);
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+/* ─── Buttons ─── */
+.btn-metro {
+  background: #333;
+  color: #fff;
+  border: 2px solid transparent;
+  padding: 6px 18px; /* Compacted padding */
+  font-weight: 600;
+  font-size: 12px; /* Reduced from 14px */
+  cursor: pointer;
+}
+
+.btn-metro:hover {
+  background: #444;
+  border-color: #777;
+}
+
+.btn-metro-accent {
+  background: var(--metro-teal);
+}
+
+/* ─── Components ─── */
+.metro-card {
+  background: #f2f2f2;
+  border: 1px solid var(--border-metro);
+  padding: 24px;
+}
+
+.metro-input {
+  width: 100%;
+  background: #fff;
+  border: 2px solid #bbb; /* Darkened for better visibility */
+  padding: 8px 12px;
+  font-size: 13px; /* Matched base font size for better consistency */
+  font-weight: 500;
+  color: #000;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.metro-input:focus {
+  border-color: var(--metro-blue);
+}
+
+/* ─── Icon Fixes ─── */
+.flex-center {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Robust alignment for icons in relative wrappers */
+.relative .lucide-abs {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ─── Global Form Fixes ─── */
+.metro-input, .input-clean, select, textarea {
+  font-family: inherit;
+  line-height: 1.5; /* Balanced line height */
+}
+
+.input-clean {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.input-clean:focus {
+  border-color: var(--metro-blue);
+  background: #fff;
+}
+
+/* Robust dropdown styling with locked-in background properties to prevent "repeating arrows" glitch */
+select {
+  appearance: none !important;
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23333' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 14px !important;
+  padding: 0 36px 0 12px !important; /* Zero vertical padding ensures browser centers text in h-11 */
+  cursor: pointer;
+  line-height: unset !important; /* Allow browser default centering */
+  box-sizing: border-box !important;
+}
+
+/* Dark selects override - must also lock in no-repeat and position */
+select.bg-stone-800, select.\!bg-stone-800, select.bg-stone-900 {
+  background: #1c1917 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center / 14px !important;
+  color: white !important;
+}
+
+/* Ensure options are always readable regardless of parent select styling */
+select option {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  font-size: 14px;
+  padding: 8px 12px !important;
+}
+
+/* Specific override for dark options to match our Metro search style */
+select.bg-stone-800 option,
+select.\!bg-stone-800 option,
+select.bg-stone-900 option {
+  background-color: #1c1917 !important;
+  color: #ffffff !important;
+}
+
+/* Robust alignment for icons in relative wrappers */
+.relative .lucide-abs {
+  position: absolute !important;
+  top: 50% !important;
+  left: 1rem !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ─── Sidebar (Navigation Bar) ─── */
+.sidebar-nav {
+  width: 260px;
+  background: #000;
+  color: white;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-nav.collapsed {
+  width: 70px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 20px;
+  color: #999;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.1s;
+}
+
+.sidebar-nav.collapsed .sidebar-item {
+  padding: 12px 0;
+  justify-content: center;
+  gap: 0;
+}
+
+.sidebar-item:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.sidebar-item.active {
+  background: var(--metro-blue);
+  color: #fff;
+}
+
+.sidebar-section-label {
+  padding: 24px 20px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #555;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Kanban Style (Tiles Grid) ─── */
+.metro-kanban-col {
+  width: 340px;
+  margin-right: 40px;
+  display: inline-block;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.metro-kanban-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.metro-kanban-item:hover {
+  border-color: var(--metro-blue);
+}
+
+/* ─── Animations ─── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes metroProgress {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.animate-slide-right {
+  animation: slideRight 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.animate-metro-progress {
+  animation: metroProgress 2s linear infinite;
+  width: 50%;
+  will-change: transform;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite linear;
+}
+
+/* ─── Custom Utilities ─── */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #00aba9;
 }

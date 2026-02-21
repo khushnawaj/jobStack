@@ -7,12 +7,21 @@ const router = express.Router();
 // Search External Jobs (Mock/Proxy)
 router.get('/search', auth, async (req, res) => {
     try {
-        const { q, l, remote, type, date } = req.query; // q=query, l=location
-        const results = await searchJobs(q, l, { remote, jobType: type, datePosted: date });
-        res.json(results);
+        const { q, l, remote, type, date, experience } = req.query;
+        console.log('--- Job Search Incoming ---');
+        console.log('Query:', q, '| Loc:', l, '| Exp:', experience);
+
+        const apiKey = process.env.RAPID_API_KEY;
+        if (!apiKey || apiKey === '' || (typeof apiKey === 'string' && apiKey.includes('...'))) {
+            console.error('CRITICAL: RapidAPI Key is MISSING or placeholder in .env');
+            return res.status(500).json({ error: 'Search service misconfigured. Please check server .env' });
+        }
+
+        const results = await searchJobs(q, l, { remote, jobType: type, datePosted: date, experience });
+        res.json(results || []);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Search failed' });
+        console.error('Jobs Search Route Error:', error.message, error.stack);
+        res.status(500).json({ error: 'Search engine error', message: error.message });
     }
 });
 
